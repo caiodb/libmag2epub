@@ -75,6 +75,7 @@ src/
 ├── raw/                    # Scraped content (gitignored)
 ├── ebook/                  # Generated EPUBs
 ├── sent/                   # Archive of sent EPUBs
+├── data/                   # Persistent data (auth.json, sent_history.txt)
 ├── main.py                 # Entry point (uses modular imports)
 ├── requirements.txt        # Python dependencies
 ├── .env.example            # Environment template
@@ -150,14 +151,16 @@ cd libmag2epub
 cp .env.example .env
 # Edit .env with your credentials
 
-# 3. Create empty auth.json (optional, for session persistence)
-touch auth.json
+# 3. Create data directory for persistent storage
+mkdir -p data
 
 # 4. Build and run
 docker-compose up --build
 ```
 
-**Note:** The `sent_history.txt` file is automatically created inside the container to track sent editions.
+**Data Persistence:** The `data/` directory stores:
+- `auth.json` - Login session (auto-created on first login)
+- `sent_history.txt` - Tracks sent editions (auto-created on first send)
 
 ### Docker Commands
 
@@ -170,6 +173,7 @@ docker run -v $(pwd)/.env:/app/.env:ro \
            -v $(pwd)/raw:/app/raw \
            -v $(pwd)/ebook:/app/ebook \
            -v $(pwd)/sent:/app/sent \
+           -v $(pwd)/data:/app/data \
            libertapranois
 
 # Run tests in container
@@ -182,8 +186,8 @@ docker run --rm libertapranois python -m pytest tests/ -v
 # Run the pipeline
 docker-compose up
 
-# Create auth.json first, then run with session persistence
-touch auth.json && docker-compose up -d
+# Run with session persistence (data/ directory mounted)
+docker-compose up -d
 
 # View logs
 docker-compose logs -f

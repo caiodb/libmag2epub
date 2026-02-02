@@ -20,9 +20,9 @@ services:
       - ./raw:/app/raw
       - ./ebook:/app/ebook
       - ./sent:/app/sent
-      # Optional: mount auth.json if you have existing session
-      # Note: Create an empty file first: touch auth.json
-      - ./auth.json:/app/auth.json
+      # Persistent data directory (auth.json and sent_history.txt)
+      # The app will create these files automatically on first run
+      - ./data:/app/data
     # Run once and exit (for cron/scheduler use)
     # Or use 'tail -f /dev/null' to keep container running
     command: python main.py

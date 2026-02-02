@@ -23,12 +23,16 @@ load_dotenv(dotenv_path=ENV_PATH)
 RAW_DIR = PROJECT_ROOT / "raw"
 EBOOK_DIR = PROJECT_ROOT / "ebook"
 SENT_DIR = PROJECT_ROOT / "sent"
+DATA_DIR = PROJECT_ROOT / "data"
 SRC_DIR = PROJECT_ROOT / "src"
 DOCS_DIR = PROJECT_ROOT / "docs"
 
-# Session state file
-AUTH_FILE = PROJECT_ROOT / "auth.json"
-SENT_HISTORY_FILE = PROJECT_ROOT / "sent_history.txt"
+# Ensure data directory exists (for Docker volume persistence)
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+# Session state and history files (in data/ for Docker persistence)
+AUTH_FILE = DATA_DIR / "auth.json"
+SENT_HISTORY_FILE = DATA_DIR / "sent_history.txt"
 
 
 # =============================================================================

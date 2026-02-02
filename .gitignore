@@ -51,9 +51,10 @@ Thumbs.db
 *.log
 cron_log.txt
 
-# Sent history (runtime data)
-sent_history.txt
-sent_history*
+# Data directory contents (runtime files)
+# Keep the directory but not the generated files
+/data/*.json
+/data/*.txt
 
 # Local project
 liberta-p-nois/
@@ -61,12 +62,6 @@ liberta-p-nois/
 # Output directories (generated files - don't track)
 /ebook/
 /sent/
-
-# Generated data files
-sent_history.txt
-sent_history*
-cron_log.txt
-*.log
 
 # Internal documentation (not needed for public repo)
 docs/PHASE1_AUDIT.md
