@@ -1,0 +1,74 @@
+# Environment variables (contains sensitive credentials)
+.env
+
+# Session authentication state (contains sensitive data)
+auth.json
+
+# Temporary scraping data
+/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+liberta-p-nois/.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+cron_log.txt
+
+# Sent history (runtime data)
+sent_history.txt
+sent_history*
+
+# Local project
+liberta-p-nois/
+
+# Output directories (generated files - don't track)
+/ebook/
+/sent/
+
+# Generated data files
+sent_history.txt
+sent_history*
+cron_log.txt
+*.log
+
+# Internal documentation (not needed for public repo)
+docs/PHASE1_AUDIT.md
+docs/PHASE2_AUDIT.md
+ROADMAP.md
