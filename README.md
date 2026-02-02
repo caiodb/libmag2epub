@@ -144,15 +144,20 @@ For a containerized setup with all dependencies pre-installed:
 ```bash
 # 1. Clone and enter directory
 git clone <repository-url>
-cd libertapranois
+cd libmag2epub
 
 # 2. Copy and configure environment
 cp .env.example .env
 # Edit .env with your credentials
 
-# 3. Build and run
+# 3. Create empty auth.json (optional, for session persistence)
+touch auth.json
+
+# 4. Build and run
 docker-compose up --build
 ```
+
+**Note:** The `sent_history.txt` file is automatically created inside the container to track sent editions.
 
 ### Docker Commands
 
@@ -177,8 +182,8 @@ docker run --rm libertapranois python -m pytest tests/ -v
 # Run the pipeline
 docker-compose up
 
-# Run with existing session (auth.json preserved)
-docker-compose up -d
+# Create auth.json first, then run with session persistence
+touch auth.json && docker-compose up -d
 
 # View logs
 docker-compose logs -f

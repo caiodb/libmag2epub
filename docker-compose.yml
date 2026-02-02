@@ -14,14 +14,14 @@ services:
       - SEC=${SEC}
       - KINDLE_EMAILS=${KINDLE_EMAILS}
     volumes:
-      # Mount .env file for credentials
+      # Mount .env file for credentials (REQUIRED)
       - ./.env:/app/.env:ro
       # Persistent directories
       - ./raw:/app/raw
       - ./ebook:/app/ebook
       - ./sent:/app/sent
-      - ./sent_history.txt:/app/sent_history.txt
       # Optional: mount auth.json if you have existing session
+      # Note: Create an empty file first: touch auth.json
       - ./auth.json:/app/auth.json
     # Run once and exit (for cron/scheduler use)
     # Or use 'tail -f /dev/null' to keep container running
