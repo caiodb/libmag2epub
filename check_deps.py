@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Dependency check script for Liberta pra Nois
+Dependency check script for Libmag2epub
 Run this to verify all dependencies are properly installed.
 """
 
@@ -54,7 +54,7 @@ def check_playwright_browsers():
 
 def main():
     print("=" * 60)
-    print("Liberta pra Nois - Dependency Check")
+    print("Libmag2epub - Dependency Check")
     print("=" * 60)
     print()
     print(f"Python version: {sys.version}")

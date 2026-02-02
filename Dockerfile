@@ -1,4 +1,4 @@
-# Liberta pra Nois - Magazine to Kindle Automation
+# Libmag2epub - Magazine to Kindle Automation
 # Multi-stage build for smaller final image
 
 # Stage 1: Dependencies

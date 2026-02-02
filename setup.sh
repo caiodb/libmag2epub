@@ -1,11 +1,11 @@
 #!/bin/bash
-# Setup script for Liberta pra Nois
+# Setup script for Libmag2epub
 # This script installs all system dependencies required for the project
 
 set -e
 
 echo "============================================================"
-echo "Liberta pra Nois - Dependency Installer"
+echo "Libmag2epub - Dependency Installer"
 echo "============================================================"
 
 # Colors for output

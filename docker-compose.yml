@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  libertapranois:
+  libmag2epub:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: libertapranois
+    container_name: libmag2epub
     environment:
       # These will be loaded from .env file
       - LIBER_USER=${LIBER_USER}

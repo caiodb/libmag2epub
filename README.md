@@ -166,7 +166,7 @@ docker-compose up --build
 
 ```bash
 # Build the image
-docker build -t libertapranois .
+docker build -t libmag2epub .
 
 # Run with mounted volumes
 docker run -v $(pwd)/.env:/app/.env:ro \
@@ -174,10 +174,10 @@ docker run -v $(pwd)/.env:/app/.env:ro \
            -v $(pwd)/ebook:/app/ebook \
            -v $(pwd)/sent:/app/sent \
            -v $(pwd)/data:/app/data \
-           libertapranois
+           libmag2epub
 
 # Run tests in container
-docker run --rm libertapranois python -m pytest tests/ -v
+docker run --rm libmag2epub python -m pytest tests/ -v
 ```
 
 ### Docker Compose (Recommended)
@@ -377,7 +377,7 @@ All Python packages are listed in `requirements.txt`:
 1. **Clone and setup Python environment:**
 ```bash
 git clone <repository-url>
-cd libertapranois
+cd libmag2epub
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -449,7 +449,7 @@ See `ROADMAP.md` for detailed development phases:
 
 ```bash
 # If you get ModuleNotFoundError, ensure you're in the project root
-cd /path/to/libertapranois
+cd /path/to/libmag2epub
 python -c "from src.config import PROJECT_ROOT; print(PROJECT_ROOT)"
 ```
 

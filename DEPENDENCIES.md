@@ -1,6 +1,6 @@
 # Dependencies Guide
 
-This document provides detailed information about all dependencies required for the Liberta pra Nois project.
+This document provides detailed information about all dependencies required for the Libmag2epub project.
 
 ## Overview
 
@@ -383,8 +383,8 @@ CMD ["python", "main.py"]
 
 Build and run:
 ```bash
-docker build -t libertapranois .
-docker run -v $(pwd)/.env:/app/.env libertapranois
+docker build -t libmag2epub .
+docker run -v $(pwd)/.env:/app/.env libmag2epub
 ```
 
 ## Version Compatibility
