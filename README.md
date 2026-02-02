@@ -202,6 +202,39 @@ docker-compose down
 - Consistent environment across systems
 - Isolated from system dependencies
 
+### Scheduling with Cron (Recommended)
+
+The container runs once and exits (batch job). To check for new magazines automatically:
+
+**Daily at 9:00 AM:**
+```bash
+# Edit your crontab
+crontab -e
+
+# Add this line to run daily at 9 AM
+0 9 * * * cd /path/to/libmag2epub && docker-compose up --build >> /var/log/libmag2epub.log 2>&1
+```
+
+**Weekly (Sundays at 10:00 AM):**
+```bash
+0 10 * * 0 cd /path/to/libmag2epub && docker-compose up --build >> /var/log/libmag2epub.log 2>&1
+```
+
+**Monitor logs:**
+```bash
+# View today's log
+tail -f /var/log/libmag2epub.log
+
+# Or use Docker logs
+docker-compose logs -f
+```
+
+**Why this approach?**
+- Container exits cleanly after each run (no wasted resources)
+- `data/` directory persists between runs (sent_history.txt, auth.json)
+- Cron handles the scheduling on your host system
+- Exit code 0 = success (even if no new magazines found)
+
 ## Usage
 
 ### Run Full Pipeline
