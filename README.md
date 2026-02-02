@@ -81,7 +81,10 @@ src/
 ├── .env.sample             # Alternative environment template
 ├── .gitignore              # Excludes .env, auth.json, raw/
 ├── pytest.ini             # Pytest configuration
-└── ROADMAP.md             # Development roadmap
+├── ROADMAP.md             # Development roadmap
+├── Dockerfile             # Docker container definition
+├── docker-compose.yml     # Docker Compose configuration
+└── .dockerignore          # Docker build exclusions
 ```
 
 ## Setup
@@ -131,6 +134,64 @@ python -m pytest tests/unit/ -v
 
 # Expected output: 28 passed
 ```
+
+## Docker Setup (Alternative)
+
+For a containerized setup with all dependencies pre-installed:
+
+### Quick Start with Docker
+
+```bash
+# 1. Clone and enter directory
+git clone <repository-url>
+cd libertapranois
+
+# 2. Copy and configure environment
+cp .env.example .env
+# Edit .env with your credentials
+
+# 3. Build and run
+docker-compose up --build
+```
+
+### Docker Commands
+
+```bash
+# Build the image
+docker build -t libertapranois .
+
+# Run with mounted volumes
+docker run -v $(pwd)/.env:/app/.env:ro \
+           -v $(pwd)/raw:/app/raw \
+           -v $(pwd)/ebook:/app/ebook \
+           -v $(pwd)/sent:/app/sent \
+           libertapranois
+
+# Run tests in container
+docker run --rm libertapranois python -m pytest tests/ -v
+```
+
+### Docker Compose (Recommended)
+
+```bash
+# Run the pipeline
+docker-compose up
+
+# Run with existing session (auth.json preserved)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
+```
+
+**Benefits:**
+- No local Python/Node.js installation needed
+- Pandoc and Playwright pre-installed
+- Consistent environment across systems
+- Isolated from system dependencies
 
 ## Usage
 

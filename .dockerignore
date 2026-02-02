@@ -1,0 +1,72 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment & Secrets
+.env
+auth.json
+
+# Data directories (mounted as volumes)
+raw/
+ebook/
+sent/
+
+# Logs
+*.log
+cron_log.txt
+sent_history.txt
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation (optional - include if needed)
+docs/
+
+# Tests (optional - include if needed)
+tests/
+.pytest_cache/
+
+# Other
+liberta-p-nois/

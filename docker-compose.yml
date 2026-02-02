@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  libertapranois:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: libertapranois
+    environment:
+      # These will be loaded from .env file
+      - LIBER_USER=${LIBER_USER}
+      - LIBER_PASS=${LIBER_PASS}
+      - MAIL=${MAIL}
+      - SEC=${SEC}
+      - KINDLE_EMAILS=${KINDLE_EMAILS}
+    volumes:
+      # Mount .env file for credentials
+      - ./.env:/app/.env:ro
+      # Persistent directories
+      - ./raw:/app/raw
+      - ./ebook:/app/ebook
+      - ./sent:/app/sent
+      - ./sent_history.txt:/app/sent_history.txt
+      # Optional: mount auth.json if you have existing session
+      - ./auth.json:/app/auth.json
+    # Run once and exit (for cron/scheduler use)
+    # Or use 'tail -f /dev/null' to keep container running
+    command: python main.py
+    # Restart policy for scheduled runs
+    restart: "no"
