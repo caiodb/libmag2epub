@@ -90,7 +90,7 @@ src/
 
 ```bash
 git clone <repository-url>
-cd libertapranois
+cd libmag2epub
 ```
 
 ### 2. Install Dependencies
