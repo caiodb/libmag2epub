@@ -1,6 +1,6 @@
-# Liberta pra Nois
+# libmag2epub
 
-Liberta pra Nois is a Python automation pipeline that scrapes the Revista Liberta website, converts magazine editions into Kindle-compatible EPUB format, and emails them to configured Kindle addresses. The project has been refactored into a modular architecture with comprehensive testing.
+libmag2epub is a Python automation pipeline that scrapes the Revista Liberta website, converts magazine editions into Kindle-compatible EPUB format, and emails them to configured Kindle addresses. The project has been refactored into a modular architecture with comprehensive testing.
 
 > **Note:** You need to be a Revista Liberta subscriber for this script to work.
 
