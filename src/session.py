@@ -3,6 +3,7 @@ Session management module for handling authentication with the magazine website.
 Ensures proper resource cleanup on all error paths to prevent memory leaks.
 """
 
+import json
 import os
 from playwright.async_api import async_playwright, Browser, BrowserContext, TimeoutError as PlaywrightTimeoutError
 from src.config import (
@@ -37,9 +38,8 @@ class SessionManager:
         Returns:
             BrowserContext: Authenticated browser context
         """
-        temp_context = None
         try:
-            if os.path.exists(AUTH_FILE):
+            if self._is_valid_auth_file():
                 print("Loading existing session...")
                 self._context = await browser.new_context(
                     storage_state=str(AUTH_FILE),
@@ -47,17 +47,32 @@ class SessionManager:
                 )
                 return self._context
             else:
-                print("No existing session found. Performing login...")
+                print("No valid session found. Performing login...")
                 self._context = await self._perform_login(browser)
                 return self._context
         except Exception:
-            # Clean up any temporary context on error
-            if temp_context:
-                try:
-                    await temp_context.close()
-                except Exception:
-                    pass
             raise
+    
+    def _is_valid_auth_file(self) -> bool:
+        """
+        Check if auth file exists and contains valid JSON.
+        
+        Returns:
+            bool: True if file exists and has valid content
+        """
+        if not os.path.exists(AUTH_FILE):
+            return False
+        
+        try:
+            with open(AUTH_FILE, 'r') as f:
+                content = f.read().strip()
+                if not content:
+                    return False
+                # Try to parse as JSON
+                json.loads(content)
+                return True
+        except (json.JSONDecodeError, IOError):
+            return False
     
     async def _perform_login(self, browser: Browser) -> BrowserContext:
         """
