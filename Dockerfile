@@ -62,7 +62,6 @@ WORKDIR /app
 COPY src/ ./src/
 COPY main.py .
 COPY requirements.txt .
-COPY .env.example .
 COPY README.md .
 
 # Create required directories

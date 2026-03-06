@@ -10,8 +10,8 @@ from email.message import EmailMessage
 from typing import List, Optional
 
 from src.config import (
-    MAIL,
-    SEC,
+    USRMAIL,
+    USRSEC,
     KINDLE_EMAILS,
     SMTP_HOST,
     SMTP_PORT,
@@ -24,8 +24,8 @@ class Mailer:
     """Handles sending EPUB files via email with retry mechanism."""
     
     def __init__(self):
-        self.sender = MAIL
-        self.password = SEC
+        self.sender = USRMAIL
+        self.password = USRSEC
         self.recipients = KINDLE_EMAILS
         self.max_retries = SMTP_MAX_RETRIES
         self.retry_delay = SMTP_RETRY_DELAY
@@ -48,20 +48,36 @@ class Mailer:
         
         # Try to connect with retries
         for attempt in range(1, self.max_retries + 1):
+            server = None
             try:
                 print(f"Connecting to SMTP server (attempt {attempt}/{self.max_retries})...")
                 
-                with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=30) as server:
+                # Try SMTP_SSL on port 465 first
+                try:
+                    server = smtplib.SMTP_SSL(SMTP_HOST, 465, timeout=30)
                     server.login(self.sender, self.password)
-                    print(f"Connected as {self.sender}")
-                    
-                    # Send to each recipient
-                    for recipient in self.recipients:
-                        try:
-                            if self._send_single_email(server, epub_path, recipient):
-                                success_count += 1
-                        except Exception as e:
-                            print(f"  ! Failed to send to {recipient}: {e}")
+                    print(f"  ✓ Connected via SSL")
+                except Exception as ssl_error:
+                    # Fallback to STARTTLS on port 587
+                    print(f"  SSL connection failed, trying STARTTLS...")
+                    server = smtplib.SMTP(SMTP_HOST, 587, timeout=30)
+                    server.starttls()
+                    server.login(self.sender, self.password)
+                    print(f"  ✓ Connected via STARTTLS")
+                
+                print(f"  Connected as {self.sender}")
+                
+                # Send to each recipient
+                for recipient in self.recipients:
+                    try:
+                        if self._send_single_email(server, epub_path, recipient):
+                            success_count += 1
+                    except Exception as e:
+                        print(f"  ! Failed to send to {recipient}: {e}")
+                
+                # Close connection
+                if server:
+                    server.quit()
                 
                 # If we got here, connection and sending succeeded
                 print(f"✓ Finished. Successfully delivered to {success_count}/{len(self.recipients)} recipients.")
@@ -70,6 +86,13 @@ class Mailer:
             except Exception as e:
                 last_error = e
                 print(f"  ! SMTP connection error (attempt {attempt}): {e}")
+                
+                # Close connection if it was opened
+                if server:
+                    try:
+                        server.quit()
+                    except:
+                        pass
                 
                 if attempt < self.max_retries:
                     print(f"  Retrying in {self.retry_delay} seconds...")
@@ -106,7 +129,7 @@ class Mailer:
     
     def _send_single_email(
         self, 
-        server: smtplib.SMTP_SSL, 
+        server: smtplib.SMTP_SSL | smtplib.SMTP, 
         epub_path: Path, 
         recipient: str
     ) -> bool:

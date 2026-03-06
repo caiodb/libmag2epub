@@ -28,3 +28,11 @@ services:
     command: python main.py
     # Restart policy for scheduled runs
     restart: "no"
+    dns:
+      - 8.8.8.8  # Force Google's IPv4 DNS
+    networks:
+      - no-ipv6
+networks:
+  no-ipv6:
+    driver: bridge
+    enable_ipv6: false

@@ -53,8 +53,8 @@ LIBER_USER = os.getenv("LIBER_USER", "")
 LIBER_PASS = os.getenv("LIBER_PASS", "")
 
 # Email credentials
-MAIL = os.getenv("MAIL", "")
-SEC = os.getenv("SEC", "")
+USRMAIL = os.getenv("USRMAIL", "")
+USRSEC = os.getenv("USRSEC", "")
 KINDLE_EMAILS = [
     e.strip() 
     for e in os.getenv("KINDLE_EMAILS", "").split(",") 
