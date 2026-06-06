@@ -55,11 +55,13 @@ class SessionManager:
     
     def _is_valid_auth_file(self) -> bool:
         """
-        Check if auth file exists and contains valid JSON.
+        Check if auth file exists, contains valid JSON, and cookies are not expired.
         
         Returns:
-            bool: True if file exists and has valid content
+            bool: True if file exists, is valid JSON, and has at least one non-expired cookie
         """
+        import time
+        
         if not os.path.exists(AUTH_FILE):
             return False
         
@@ -68,9 +70,26 @@ class SessionManager:
                 content = f.read().strip()
                 if not content:
                     return False
-                # Try to parse as JSON
-                json.loads(content)
-                return True
+                data = json.loads(content)
+                
+                # Check cookie expiration
+                current_time = time.time()
+                cookies = data.get("cookies", [])
+                
+                if not cookies:
+                    return False
+                
+                # At least one session cookie must still be valid
+                has_valid_cookie = False
+                for cookie in cookies:
+                    expires = cookie.get("expires", -1)
+                    # expires == -1 means session cookie (no expiry), treat as valid
+                    # Otherwise check if it's still within 24h of expiration
+                    if expires == -1 or expires > current_time:
+                        has_valid_cookie = True
+                        break
+                
+                return has_valid_cookie
         except (json.JSONDecodeError, IOError):
             return False
     

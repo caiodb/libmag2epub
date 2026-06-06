@@ -103,22 +103,55 @@ class PipelineOrchestrator:
         """
         Check if a magazine edition has already been processed.
         
+        An edition is considered "processed" if its EPUB exists in ebook/
+        or sent/, OR if it appears in the sent_history file.
+        
+        We do NOT check raw/ anymore — having scraped data does not mean
+        the EPUB was successfully built and sent.
+        
         Args:
             slug: The edition slug
             
         Returns:
-            bool: True if already processed
+            bool: True if already processed (EPUB exists or is in history)
         """
-        # Check multiple locations
-        epub_path = PROJECT_ROOT / f"{slug}.epub"
-        ebook_path = EBOOK_DIR / f"{slug}.epub"
-        raw_path = RAW_DIR / slug
+        from src.config import SENT_DIR, SENT_HISTORY_FILE
         
-        return (
-            epub_path.exists() or 
-            ebook_path.exists() or 
-            raw_path.exists()
-        )
+        # Check ebook directory
+        ebook_path = EBOOK_DIR / f"{slug}.epub"
+        
+        # Check sent directory (archived EPUBs)
+        sent_path = SENT_DIR / f"{slug}.epub"
+        
+        # Also check with "Edição X" naming convention in sent/
+        edition_num = slug.replace("edicao-", "").replace("edica-", "")
+        if edition_num:
+            # Try various filename formats used by the builder
+            for name_pattern in [
+                f"Edi\u00e7\u00e3o {edition_num} (Revista Liberta).epub",
+                f"Edicao {edition_num} (Revista Liberta).epub",
+                f"Edica {edition_num} (Revista Liberta).epub",
+            ]:
+                import glob as glob_mod
+                matches = glob_mod.glob(str(SENT_DIR / name_pattern))
+                if matches:
+                    return True
+        
+        # Check sent_history file
+        history_exists = False
+        if SENT_HISTORY_FILE.exists():
+            try:
+                content = SENT_HISTORY_FILE.read_text(encoding="utf-8")
+                lines = [l.strip() for l in content.splitlines() if l.strip()]
+                # Match by edition number or slug
+                for line in lines:
+                    if slug in line or f"edicao-{edition_num}" in line.lower() or f"edi\u00e7\u00e3o {edition_num}" in line.lower():
+                        history_exists = True
+                        break
+            except Exception:
+                pass
+        
+        return ebook_path.exists() or sent_path.exists() or history_exists
 
 
 # Convenience functions for different usage patterns
