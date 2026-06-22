@@ -64,6 +64,12 @@ liberta-p-nois/
 /sent/
 
 # Internal documentation (not needed for public repo)
+# Process documentation
+PROCESSO_COMPLETO.md
 docs/PHASE1_AUDIT.md
 docs/PHASE2_AUDIT.md
 ROADMAP.md
+
+# Runtime data files with potential sensitive information
+/data/sent_history.txt
+
