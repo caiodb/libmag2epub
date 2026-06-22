@@ -111,8 +111,6 @@ class SessionManager:
             context = await browser.new_context(viewport={"width": 1280, "height": 720})
             page = await context.new_page()
             
-            print(f"Logging in as {LIBER_USER}...")
-            
             # Navigate to login page with timeout
             await page.goto(LOGIN_URL, wait_until="networkidle", timeout=30000)
             
@@ -135,7 +133,7 @@ class SessionManager:
             
             # Save session state
             await context.storage_state(path=str(AUTH_FILE))
-            print(f"Login successful. Session saved to {AUTH_FILE}")
+            print(f"Login successful.")
             
             self._context = context
             return context
