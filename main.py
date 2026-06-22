@@ -1,15 +1,19 @@
 """
 Main entry point for the magazine automation pipeline.
-Uses modular imports instead of subprocess calls.
+Forces fresh login on every execution to ensure reliability.
 """
 
 import asyncio
 import sys
+import os
 from pathlib import Path
 
 # Add src to path for imports
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
+
+# Force environment variable for fresh login on every run
+os.environ['LIBER_FRESH_LOGIN'] = 'true'
 
 from src.orchestrator import PipelineOrchestrator
 from src.sent_manager import SentManager
