@@ -1,0 +1,15 @@
+# Cron Job para Revista Liberta - Roda SEMANALMENTE
+# Instalar: crontab -e e adicionar as linhas abaixo
+#
+# Explicação:
+#   0 8 * * 1 = Toda segunda-feira às 08:00 (pode mudar horário)
+#   cd /home/devuser/myapps/newshit = Muda para o diretório correto
+#   LIBER_FRESH_LOGIN=true = Reinicia login a cada semana (evita problemas)
+#   python3 run_weekly.py 41 = Processa desde da edição 42 em diante
+#
+
+# Opção A: Rodar imediatamente após o último processamento conhecido (edição 40)
+LIBER_FRESH_LOGIN=true cd /home/devuser/myapps/newshit && python3 run_weekly.py 40
+
+# Opção B: Usar como script reutilizável (deixe um número zero pra testar)
+# LIBER_FRESH_LOGIN=true cd /home/devuser/myapps/newshit && python3 run_weekly.py 0
